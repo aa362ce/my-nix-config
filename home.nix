@@ -20,6 +20,7 @@
     pkgs.docker-compose
     pkgs.colima
     pkgs.jdk21
+    pkgs.poppler
   ];
 
   programs.zsh = {
