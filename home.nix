@@ -21,6 +21,11 @@
     pkgs.colima
     pkgs.jdk21
     pkgs.poppler
+    pkgs.ffmpeg
+    pkgs.gh
+    pkgs.imessage-exporter
+    pkgs.ollama
+    pkgs.yt-dlp
   ];
 
   programs.zsh = {

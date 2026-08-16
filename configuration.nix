@@ -12,7 +12,12 @@
 
   homebrew = {
     enable = true;
-    casks = [ "claude" ];
+    casks = [
+      "claude"
+      "google-chrome"
+      "visual-studio-code"
+      "whatsapp"
+    ];
   };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
