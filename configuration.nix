@@ -10,6 +10,11 @@
 
   programs.zsh.enable = true;
 
+  homebrew = {
+    enable = true;
+    casks = [ "claude" ];
+  };
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   system.stateVersion = 5;
