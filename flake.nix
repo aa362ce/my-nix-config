@@ -1,5 +1,5 @@
 {
-  description = "My Mac configuration";
+  description = "My machine configurations (macOS + WSL Ubuntu)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -24,6 +24,15 @@
             builtins.elem (nixpkgs.lib.getName pkg) [ "claude-code" "terraform" ];
         }
       ];
+    };
+
+    homeConfigurations."ashish@wsl" = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfreePredicate = pkg:
+          builtins.elem (nixpkgs.lib.getName pkg) [ "claude-code" "terraform" ];
+      };
+      modules = [ ./home-wsl.nix ];
     };
   };
 }
