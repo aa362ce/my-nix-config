@@ -32,13 +32,7 @@ mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 ```
 
-## 4. Install home-manager
-
-```bash
-nix run home-manager/master -- init
-```
-
-## 5. Clone this repo and activate
+## 4. Clone this repo and activate
 
 ```bash
 git clone <your-remote-url> ~/code/my-nix-config
@@ -47,10 +41,19 @@ chmod +x activate-wsl.sh
 ./activate-wsl.sh
 ```
 
-This builds and switches to the `ashish@wsl` home-manager configuration
-defined in [home-wsl.nix](home-wsl.nix).
+There's no separate "install home-manager" step — on a fresh machine the
+`home-manager` command doesn't exist yet, so `activate-wsl.sh` detects that
+and bootstraps the first run via `nix run home-manager/master -- switch
+--flake .#ashish@wsl`. That first run installs `home-manager` itself into
+your profile (via `programs.home-manager.enable` in
+[home-wsl.nix](home-wsl.nix)), so every run after that uses the plain
+`home-manager` command directly and is much faster.
 
-## 6. Set zsh as your default shell (optional)
+The first run builds everything from scratch (claude-code, terraform,
+google-cloud-sdk, jdk21, ffmpeg, etc. all get compiled/fetched), so expect
+it to take several minutes.
+
+## 5. Set zsh as your default shell (optional)
 
 home-manager installs zsh but doesn't change your login shell. If you want
 it as the default:
@@ -83,3 +86,12 @@ Edit [home-wsl.nix](home-wsl.nix), then re-run:
   setups get them via Docker Desktop's WSL integration. Add
   `pkgs.docker` / `pkgs.docker-compose` to [home-wsl.nix](home-wsl.nix) if
   you'd rather have Nix provide them.
+
+## Troubleshooting
+
+**`./activate-wsl.sh: line 7: home-manager: command not found`** — this
+happens if you're on an older copy of `activate-wsl.sh` that assumed
+`home-manager` was already installed. Pull the latest version of this repo;
+the current script falls back to `nix run home-manager/master --` when the
+`home-manager` command isn't on `PATH` yet, so it bootstraps itself on a
+completely fresh install.
